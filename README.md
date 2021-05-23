@@ -35,8 +35,8 @@ try:
         frame = stream.get_frame()
         if stream.is_frame_empty(frame):
             continue
-        detector.process_frame(frame, bounding_boxes)
-        for detection in detector.get_current_detections():
+        daddy.process_frame(frame)
+        for detection in daddy.get_current_detections():
             if not detection.has_been_processed_downstream:
                 detection.identify()
                 detection.has_been_processed_downstream = True
