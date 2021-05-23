@@ -31,6 +31,8 @@ class ObjectDetector():
         self.model_config_path = os.path.join(this_files_dir, 'mlmodels/yolov3-tiny.cfg')
         self.labels_path = os.path.join(this_files_dir, 'mlmodels/coco.names')
         self.current_detections = []
+        self.callback_object_detected = None
+        self.callback_object_expired = None
 
     def _clean_up(self):
         """Cleans up resources"""
@@ -119,6 +121,12 @@ class ObjectDetector():
         """Returns the list of current detections"""
         return self.current_detections
 
+    def add_new_detection(self, detection):
+        """Append a new detection to the list"""
+        self.current_detections.append(detection)
+        if self.callback_object_detected:
+            self.callback_object_detected(detection)
+
     def update_current_detections(self, raw_detections):
         """Updates the current detections list from the latest frame
         Compares objects to determine if they are novel or existing
@@ -135,10 +143,17 @@ class ObjectDetector():
                     existing_detection.update_last_spotted()
                 else:
                     # This object is too different than what we have, add it to the list.
-                    self.current_detections.append(raw_detection)
+                    self.add_new_detection(raw_detection)
             else:
                 # This object is new to us, add it to the list.
-                self.current_detections.append(raw_detection)
+                self.add_new_detection(raw_detection)
         for detection in self.current_detections:
             if int(time.time()) > (detection.last_spotted + self.object_has_vanished_timeout_seconds):
+                if self.callback_object_expired:
+                    self.callback_object_expired(detection)
                 self.current_detections.remove(detection)
+    
+    def set_callbacks(self, object_found_callback, object_expired_callback):
+        """Set callbacks for an object being found, and expiring"""
+        self.callback_object_detected = object_found_callback
+        self.callback_object_expired = object_expired_callback
