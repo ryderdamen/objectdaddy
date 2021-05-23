@@ -1,0 +1,3 @@
+recursive-include . *.names
+recursive-include . *.cfg
+recursive-include . *.weights

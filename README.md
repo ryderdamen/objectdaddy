@@ -3,7 +3,7 @@ A simple, python-based object recognizer, basically an implementation of yolo-v3
 
 
 ## Usage
-Basic usage is as follows:
+Basic usage is as follows. This project is built to work with rtsparty (also on pypi).
 
 You can get and recognize one frame using the following:
 ```python

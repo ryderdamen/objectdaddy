@@ -14,7 +14,7 @@ TESTS_REQUIRE = ['pytest']
 
 setuptools.setup(
     name='objectdaddy',
-    version='0.0.1',
+    version='0.0.2',
     description='A python yolov3-tiny-based object recognizer.',
     long_description=get_readme(),
     long_description_content_type="text/markdown",
@@ -27,4 +27,5 @@ setuptools.setup(
     install_requires=INSTALL_REQUIRES,
     test_suite='pytest',
     tests_require=TESTS_REQUIRE,
+    include_package_data=True,
 )
