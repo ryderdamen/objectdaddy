@@ -78,6 +78,29 @@ class Detection():
 
     def update_last_spotted(self):
         self.last_spotted = int(time.time())
+    
+    def serialize(self):
+        """Return the serialized detection information"""
+        return {
+            'x': self.x,
+            'y': self.y,
+            'w': self.w,
+            'h': self.h,
+            'confidence': self.confidence,
+            'label': self.label,
+            'last_spotted': self.last_spotted,
+            'has_been_processed_downstream': self.has_been_processed_downstream,
+        }
+    
+    def update_detection(self, new_detection):
+        """Update the detection object to the latest"""
+        self.frame = new_detection.frame
+        self.confidence = new_detection.confidence
+        self.x = new_detection.x
+        self.y = new_detection.y
+        self.w = new_detection.w
+        self.h = new_detection.h
+        self.update_last_spotted()
 
     def get_frame_cropped(self):
         """Returns the cropped frame of the detection"""

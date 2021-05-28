@@ -23,10 +23,10 @@ class ObjectDetector():
     def _set_defaults(self):
         this_files_dir = os.path.dirname(os.path.realpath(__file__))
         self.network = None
-        self.confidence_threshold = 0.5
-        self.object_has_vanished_timeout_seconds = 5
+        self.confidence_threshold = 0.4
+        self.object_has_vanished_timeout_seconds = 2
         self.non_maxima_supression_threshold = 0.3
-        self.object_margin_of_movement = 0.3
+        self.object_margin_of_movement = 0.2
         self.model_weights_path = os.path.join(this_files_dir, 'mlmodels/yolov3-tiny.weights')
         self.model_config_path = os.path.join(this_files_dir, 'mlmodels/yolov3-tiny.cfg')
         self.labels_path = os.path.join(this_files_dir, 'mlmodels/coco.names')
@@ -140,7 +140,7 @@ class ObjectDetector():
                     self.current_detections, self.object_margin_of_movement)
                 if existing_detection:
                     # This object has been seen before
-                    existing_detection.update_last_spotted()
+                    existing_detection.update_detection(raw_detection)
                 else:
                     # This object is too different than what we have, add it to the list.
                     self.add_new_detection(raw_detection)
